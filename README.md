@@ -6,6 +6,7 @@ A React-based interview application that allows users to upload resumes and cond
 
 - **Frontend**: [https://swipe.sandeshshrestha.tech/](https://swipe.sandeshshrestha.tech/)
 - **Backend API**: [https://swipe-api.sandeshshrestha.tech/](https://swipe-api.sandeshshrestha.tech/)
+- **API Documentation**: [https://swipe-api.sandeshshrestha.tech/docs/](https://swipe-api.sandeshshrestha.tech/docs/)
 
 ## Features
 
