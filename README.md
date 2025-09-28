@@ -2,6 +2,11 @@
 
 A React-based interview application that allows users to upload resumes and conduct AI-powered interviews.
 
+## Live Demo
+
+- **Frontend**: [https://swipe.sandeshshrestha.tech/](https://swipe.sandeshshrestha.tech/)
+- **Backend API**: [https://swipe-api.sandeshshrestha.tech/](https://swipe-api.sandeshshrestha.tech/)
+
 ## Features
 
 - Resume Upload: Accept PDF/DOCX files and extract Name, Email, Phone
