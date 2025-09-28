@@ -1,10 +1,10 @@
-module.exports = {
+export default {
   apps: [
     {
       name: "swipe-interview-api",
       script: "python3",
       args: "-m gunicorn --bind 0.0.0.0:7078 --workers 4 --timeout 120 wsgi:app",
-      cwd: "/Users/sandeshshrestha/Desktop/swipe-assignment/backend",
+      cwd: "/root/assignment-101/backend",
       interpreter: "none",
       instances: 1,
       autorestart: true,
