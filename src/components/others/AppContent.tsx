@@ -13,7 +13,7 @@ import Button from "../ui/button/Button";
 import { Trash2 } from "lucide-react";
 
 const AppContent: React.FC = () => {
-  const { questions, isCompleted, answers } = useSelector(
+  const { questions, isCompleted } = useSelector(
     (state: RootState) => state.interview
   );
   const [activeTab, setActiveTab] = useState<"interviewee" | "interviewer">(
@@ -25,7 +25,7 @@ const AppContent: React.FC = () => {
   // ===== Handle session checking loading state ===== //
   useEffect(() => {
     if (activeTab === "interviewee") {
-      // ===== Show loading for 2 seconds to check for active session ===== //
+      // ===== Show loading for 2 seconds to allow session detection ===== //
       const timer = setTimeout(() => {
         setIsCheckingSession(false);
       }, 2000);
@@ -51,9 +51,7 @@ const AppContent: React.FC = () => {
       />
 
       {activeTab === "interviewee" &&
-        (questions.length > 0 &&
-        isCompleted &&
-        answers.length >= questions.length ? (
+        (questions.length > 0 && isCompleted ? (
           <InterviewCompletionScreen />
         ) : (
           <IntervieweeScreen />

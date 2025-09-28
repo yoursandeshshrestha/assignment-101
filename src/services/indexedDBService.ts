@@ -5,7 +5,7 @@
 
 class IndexedDBService {
   private dbName = "SwipeInterviewDB";
-  private version = 1;
+  private version = 2;
   private db: IDBDatabase | null = null;
   private initPromise: Promise<void> | null = null;
 
@@ -37,6 +37,10 @@ class IndexedDBService {
         if (!db.objectStoreNames.contains("candidates")) {
           db.createObjectStore("candidates", { keyPath: "id" });
         }
+
+        if (!db.objectStoreNames.contains("interview")) {
+          db.createObjectStore("interview", { keyPath: "id" });
+        }
       };
     });
 
@@ -57,6 +61,38 @@ class IndexedDBService {
     }
   }
 
+  // Helper function to remove null values from objects (IndexedDB can't store null)
+  private cleanForStorage(value: unknown): unknown {
+    // Convert Redux proxy objects to plain objects first
+    let plainValue: unknown;
+    try {
+      plainValue = JSON.parse(JSON.stringify(value));
+    } catch (error) {
+      // If JSON serialization fails, try to handle it gracefully
+      plainValue = value;
+    }
+
+    if (plainValue === null) {
+      return undefined;
+    }
+
+    if (Array.isArray(plainValue)) {
+      return plainValue.map((item) => this.cleanForStorage(item));
+    }
+
+    if (typeof plainValue === "object" && plainValue !== null) {
+      const cleaned: Record<string, unknown> = {};
+      for (const [key, val] of Object.entries(plainValue)) {
+        if (val !== null) {
+          cleaned[key] = this.cleanForStorage(val);
+        }
+      }
+      return cleaned;
+    }
+
+    return plainValue;
+  }
+
   async setItem(storeName: string, key: string, value: unknown): Promise<void> {
     const maxRetries = 3;
     let retryCount = 0;
@@ -71,7 +107,7 @@ class IndexedDBService {
             const store = transaction.objectStore(storeName);
             const request = store.put({
               id: key,
-              data: value,
+              data: this.cleanForStorage(value),
               timestamp: Date.now(),
             });
 
@@ -209,6 +245,7 @@ class IndexedDBService {
     try {
       // Clear all object stores
       await this.clearStore("candidates");
+      await this.clearStore("interview");
     } catch (error) {
       console.error("Failed to clear all data:", error);
       throw new Error(`Failed to clear all data: ${error}`);
@@ -261,18 +298,21 @@ class IndexedDBService {
 
   async checkDataExists(): Promise<{
     candidates: number;
+    interview: number;
   }> {
     await this.ensureReady();
 
     try {
       const candidates = await this.getAllItems("candidates");
+      const interview = await this.getAllItems("interview");
 
       return {
         candidates: candidates.length,
+        interview: interview.length,
       };
     } catch (error) {
       console.error("Error checking data:", error);
-      return { candidates: 0 };
+      return { candidates: 0, interview: 0 };
     }
   }
 }

@@ -1,12 +1,11 @@
-import { useEffect, useCallback, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { candidateSyncService } from '../services/candidateSyncService';
-import type { RootState } from '../store';
+import { useEffect, useCallback, useRef } from "react";
+import { useSelector } from "react-redux";
+import { candidateSyncService } from "../services/candidateSyncService";
+import type { RootState } from "../store";
 
 export const useCandidateSync = () => {
-  const { candidateId, isActive, chatHistory, currentQuestionIndex, answers } = useSelector(
-    (state: RootState) => state.interview
-  );
+  const { candidateId, isActive, chatHistory, currentQuestionIndex, answers } =
+    useSelector((state: RootState) => state.interview);
 
   const syncIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastSyncRef = useRef<{
@@ -29,9 +28,11 @@ export const useCandidateSync = () => {
     };
 
     // Only sync if there are actual changes
-    const hasChanges = 
-      currentState.chatHistoryLength !== lastSyncRef.current.chatHistoryLength ||
-      currentState.currentQuestionIndex !== lastSyncRef.current.currentQuestionIndex ||
+    const hasChanges =
+      currentState.chatHistoryLength !==
+        lastSyncRef.current.chatHistoryLength ||
+      currentState.currentQuestionIndex !==
+        lastSyncRef.current.currentQuestionIndex ||
       currentState.answersLength !== lastSyncRef.current.answersLength;
 
     if (hasChanges) {
@@ -42,11 +43,10 @@ export const useCandidateSync = () => {
           currentQuestionIndex,
           answers
         );
-        
+
         lastSyncRef.current = currentState;
-        console.log('✅ Interview progress synced successfully');
       } catch (error) {
-        console.error('❌ Failed to sync interview progress:', error);
+        console.error("❌ Failed to sync interview progress:", error);
       }
     }
   }, [candidateId, isActive, chatHistory, currentQuestionIndex, answers]);
@@ -93,9 +93,8 @@ export const useCandidateSync = () => {
           currentQuestionIndex,
           answers
         );
-        console.log('✅ Forced sync completed');
       } catch (error) {
-        console.error('❌ Forced sync failed:', error);
+        console.error("❌ Forced sync failed:", error);
       }
     }
   }, [candidateId, isActive, chatHistory, currentQuestionIndex, answers]);

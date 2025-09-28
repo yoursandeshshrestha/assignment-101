@@ -16,7 +16,6 @@ const SessionDetector: React.FC = () => {
     isActive,
     showWelcomeBackModal,
     isCompleted,
-    showPauseModal,
   } = useSelector((state: RootState) => state.interview);
   const hasCheckedRef = useRef(false);
 
@@ -43,10 +42,7 @@ const SessionDetector: React.FC = () => {
       // ===== First check for completed sessions ===== //
       if (questions.length > 0 && isCompletedBool) {
         dispatch(checkForCompletedSession());
-
-        // ===== Also sync the completed interview data to ensure candidate status is updated ===== //
         dispatch(syncCompletedInterview());
-
         hasCheckedRef.current = true;
         return;
       }
@@ -79,7 +75,6 @@ const SessionDetector: React.FC = () => {
         !isCompletedBool &&
         currentQuestionIndexNum < questions.length
       ) {
-        // ===== This is a paused session, show the welcome back modal ===== //
         dispatch(checkForActiveSession());
       }
 
@@ -97,7 +92,6 @@ const SessionDetector: React.FC = () => {
     isActive,
     showWelcomeBackModal,
     isCompleted,
-    showPauseModal,
   ]);
 
   return null; // ===== This component doesn't render anything ===== //

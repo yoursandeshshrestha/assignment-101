@@ -300,7 +300,7 @@ const interviewSlice = createSlice({
       state.showWelcomeBackModal = true;
     },
     resetInterview: () => {
-      return initialState;
+      return { ...initialState };
     },
     restoreSession: (
       state,

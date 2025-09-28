@@ -255,10 +255,6 @@ const InterviewChat: React.FC<InterviewChatProps> = ({ extractedData }) => {
 
   // ===== Start interview flow ===== //
   const startInterviewFlow = useCallback(async () => {
-    console.log(
-      "startInterviewFlow called with collectedInfo:",
-      collectedInfoRef.current
-    );
     // ===== Check for missing fields first ===== //
     const missing: string[] = [];
     const currentInfo = collectedInfoRef.current;
@@ -307,7 +303,6 @@ const InterviewChat: React.FC<InterviewChatProps> = ({ extractedData }) => {
 
   // ===== Handle pause ===== //
   const handlePause = useCallback(() => {
-    console.log("Pausing interview...");
     dispatch(pauseInterview());
   }, [dispatch]);
 
@@ -469,26 +464,12 @@ const InterviewChat: React.FC<InterviewChatProps> = ({ extractedData }) => {
 
   // ===== Initialize interview flow when component mounts with extracted data ===== //
   useEffect(() => {
-    console.log(
-      "InterviewChat useEffect - extractedData:",
-      extractedData,
-      "isActive:",
-      isActive,
-      "questions.length:",
-      questions.length,
-      "hasStarted:",
-      hasStartedRef.current
-    );
     if (
       extractedData &&
       !isActive &&
       questions.length === 0 &&
       !hasStartedRef.current
     ) {
-      console.log(
-        "Starting interview flow with extracted data:",
-        extractedData
-      );
       hasStartedRef.current = true;
       startInterviewFlow();
     }
