@@ -706,5 +706,5 @@ class GenerateSummary(Resource):
 
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 7077))
+    port = int(os.getenv('PORT', 7078))
     app.run(debug=True, host='0.0.0.0', port=port)
